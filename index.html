@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人間関係を動かす３つの鍵 — C+Plus 特別版</title>
+    <style>
+        :root {
+            --base-bg: #FAFAF7;
+            --base-text: #333333;
+            --heading-text: #222222;
+            --accent-primary: #E7B66A;
+            --accent-secondary: #6B8E9E;
+            --btn: #E7B66A;
+            --btn-hover: #C99538;
+            --card-bg: #FFFFFF;
+            --muted: #777777;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+            background-color: var(--base-bg);
+            color: var(--base-text);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--heading-text);
+            margin: 0;
+        }
+
+        header .sub-copy {
+            font-size: 1.1rem;
+            color: var(--muted);
+            margin-top: 1rem;
+        }
+        
+        header .event-info {
+            margin-top: 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        #hero {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        #hero .hero-summary {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 2rem 0;
+        }
+
+        .hero-visuals {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .author-block {
+            text-align: center;
+            width: 180px;
+        }
+
+        .author-block .speaker-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .author-block .book-cover {
+            width: 120px;
+            height: auto;
+            object-fit: contain;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .author-block .author-name {
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: var(--heading-text);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--btn);
+            color: var(--base-text);
+            padding: 1rem 2.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .cta-button:hover {
+            background-color: var(--btn-hover);
+        }
+        
+        .cta-button.small {
+            font-size: 1rem;
+            padding: 0.8rem 1.5rem;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        section h2 {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--heading-text);
+            margin-bottom: 40px;
+            border-top: 3px solid var(--accent-primary);
+            display: inline-block;
+            padding-top: 20px;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        #story p, #session p {
+            max-width: 70ch;
+            margin: 1.5rem auto;
+            text-align: center;
+        }
+
+        #session ul {
+            list-style: none;
+            padding: 0;
+            max-width: 60ch;
+            margin: 2rem auto;
+            text-align: center;
+        }
+
+        #session li {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-style: italic;
+            color: var(--muted);
+        }
+        
+        #speakers .speaker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .speaker-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .speaker-card img.profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+        
+        .speaker-card img.book-cover {
+            width: 120px;
+            height: auto;
+            margin-top: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .speaker-card .book-info {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .speaker-card .book-title {
+            font-weight: bold;
+            margin: 0;
+            color: var(--heading-text);
+        }
+
+        .speaker-card .book-publisher {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .speaker-card h3 {
+            color: var(--heading-text);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .speaker-card .comment {
+            font-style: italic;
+            color: var(--accent-secondary);
+            margin: 1rem 0;
+        }
+        
+        .speaker-card .profile-text {
+            font-size: 0.9rem;
+            text-align: left;
+            margin: 1.5rem 0;
+        }
+        
+        .speaker-card .mini-toc {
+            font-size: 0.9rem;
+            text-align: left;
+            background: var(--base-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+        
+        .speaker-card .mini-toc h4 {
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+            color: var(--heading-text);
+        }
+
+        #benefits ul, #bonus ul {
+            list-style: '✨';
+            padding-left: 2rem;
+            max-width: 60ch;
+            margin: 2rem auto;
+        }
+
+        #benefits li, #bonus li {
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+        }
+        
+        .bonus-box {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            margin-top: 2rem;
+            border-left: 5px solid var(--accent-primary);
+        }
+        
+        .bonus-box h3 {
+            margin-top: 0;
+        }
+        
+        .bonus-box .price-emphasis {
+            font-weight: bold;
+            color: var(--accent-secondary);
+        }
+
+        #outline table {
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem auto;
+            border-collapse: collapse;
+        }
+
+        #outline th, #outline td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        #outline th {
+            width: 30%;
+            background: var(--base-bg);
+            font-weight: bold;
+        }
+
+        #faq .faq-item {
+            margin-bottom: 1.5rem;
+        }
+
+        #faq .faq-item strong {
+            display: block;
+            font-size: 1.1rem;
+        }
+
+        #cta {
+            background-color: var(--accent-secondary);
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        #cta h2 {
+            color: var(--base-bg);
+            border: none;
+            padding: 0;
+        }
+
+        #cta .cta-button {
+            background-color: var(--btn);
+            color: var(--heading-text);
+            font-size: 1.5rem;
+            padding: 1.2rem 3.5rem;
+        }
+        
+        #cta .cta-button:hover {
+            background-color: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        
+        .notes {
+            font-size: 0.9rem;
+            color: var(--muted);
+            max-width: 70ch;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .speaker-photos {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>人間関係を動かす３つの鍵</h1>
+            <p class="sub-copy">C+Plusの3人が、本のこと、人のことを話します。</p>
+            <div class="event-info">
+                2025年12月11日（木）19:30–21:30 | Zoom オンライン
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="container">
+                <div class="hero-visuals">
+                    <div class="author-block">
+                        <img src="assets/photo_hamada.jpg" alt="浜田陽介の顔写真" class="speaker-photo">
+                        <p class="author-name">浜田陽介</p>
+                        <img src="assets/book_hamada.jpg" alt="浜田陽介の著書『すぐ動けない人のための 思考を放つ100項』の書影" class="book-cover">
+                    </div>
+                    <div class="author-block">
+                        <img src="assets/photo_hori.jpg" alt="堀もとこの顔写真" class="speaker-photo">
+                        <p class="author-name">堀もとこ</p>
+                        <img src="assets/book_hori.jpg" alt="堀もとこの著書『おだやかに過ごす「共感力」』の書影" class="book-cover">
+                    </div>
+                    <div class="author-block">
+                        <img src="assets/photo_okamoto.jpg" alt="岡本文宏の顔写真" class="speaker-photo">
+                        <p class="author-name">岡本文宏</p>
+                        <img src="assets/book_okamoto.jpg" alt="岡本文宏の著書『リーダーの任せる技術』の書影" class="book-cover">
+                    </div>
+                </div>
+                <p class="hero-summary">C+Plusの3人が集う、出版記念の特別な夜。</p>
+                <!-- 申込URLをここに設定 → https://example.com/asmail_form -->
+                <a href="#cta" id="asmel_url_top" class="cta-button small">申し込む</a>
+            </div>
+        </section>
+
+        <section id="story">
+            <div class="container">
+                <div class="section-header">
+                    <h2>この夜だけの、特別な時間</h2>
+                </div>
+                <p>毎月「出版」をテーマに、素敵な著者の方をお招きしてお届けしているオンライン企画「C+Plus」。</p>
+                <p>今回は、いつもは運営メンバーとして場を支えている3人が、それぞれの新刊を手に、マイクの前に立ちます。<br>テーマは、3冊に共通する**「人間関係を動かす鍵」**。</p>
+                <p>気軽に話して、じっくり聴いて。そんなあたたかい時間を、ご一緒しませんか？</p>
+            </div>
+        </section>
+
+        <section id="session">
+            <div class="container">
+                <div class="section-header">
+                    <h2>3人だから話せることがある</h2>
+                </div>
+                <p>冒頭の30分は、3人でのトークセッション。<br>それぞれの本から見えてきた「人間関係」のリアルを、普段着の言葉で語り合います。</p>
+                <ul>
+                    <li>「『共感』って、仕事になるとむずかしいよね。」</li>
+                    <li>「つい自分でやっちゃう…『任せる』って、結局は勇気なのかも。」</li>
+                    <li>「動けないとき、本当にほしいのって『正論』じゃないんだよなあ。」</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="speakers">
+            <div class="container">
+                <div class="section-header">
+                    <h2>３つの鍵、３つの視点</h2>
+                </div>
+                <div class="speaker-grid">
+                    <div class="speaker-card">
+                        <img src="assets/photo_hamada.jpg" alt="浜田陽介の顔写真" class="profile-pic">
+                        <h3>浜田陽介</h3>
+                        <p class="comment">"視点を変えれば、人生が変わる"</p>
+                        <p class="profile-text">高知県出身。法政大学工学部卒。銀行システム開発・ゲーム業界ディレクターを経て独立。現在は生成AIの講師・コンサルとして全国で講演。哲学・科学・歴史・文学などの教養を軸に「思考を解き放つ力」を伝える。</p>
+                        <img src="assets/book_hamada.jpg" alt="著書『すぐ動けない人のための 思考を放つ100項』" class="book-cover">
+                        <div class="book-info">
+                            <p class="book-title">『すぐ動けない人のための 思考を放つ100項』</p>
+                            <p class="book-publisher">明日香出版社</p>
+                        </div>
+                        <div class="mini-toc">
+                            <h4>講演テーマ</h4>
+                            <p>思考を動かす鍵：なぜ私たちは「動けない」のか？</p>
+                        </div>
+                    </div>
+                    <div class="speaker-card">
+                        <img src="assets/photo_hori.jpg" alt="堀もとこの顔写真" class="profile-pic">
+                        <h3>堀もとこ</h3>
+                        <p class="comment">"自分にも相手にも、やさしい関わり方を。"</p>
+                        <p class="profile-text">心理カウンセラー・講師。人間関係のストレスや職場改善をテーマに全国で講演・研修。臨床・発達心理をベースに、日常に活かせる「傾聴と共感」をやさしく伝える。</p>
+                        <img src="assets/book_hori.jpg" alt="著書『おだやかに過ごす「共感力」』" class="book-cover">
+                        <div class="book-info">
+                            <p class="book-title">『おだやかに過ごす「共感力」』</p>
+                            <p class="book-publisher">ぱる出版</p>
+                        </div>
+                        <div class="mini-toc">
+                            <h4>講演テーマ</h4>
+                            <p>共感を動かす鍵：聴くことから始まる、心の距離の縮め方</p>
+                        </div>
+                    </div>
+                    <div class="speaker-card">
+                        <img src="assets/photo_okamoto.jpg" alt="岡本文宏の顔写真" class="profile-pic">
+                        <h3>岡本文宏</h3>
+                        <p class="comment">"任せる勇気が、チームを強くします。"</p>
+                        <p class="profile-text">人財育成コンサルタント・講演家。中小企業の現場支援・リーダー研修を20年以上。任せる技術や右腕育成、チームの自走化に定評。</p>
+                        <img src="assets/book_okamoto.jpg" alt="著書『リーダーの任せる技術』" class="book-cover">
+                        <div class="book-info">
+                            <p class="book-title">『リーダーの任せる技術』</p>
+                            <p class="book-publisher">あさ出版</p>
+                        </div>
+                        <div class="mini-toc">
+                            <h4>講演テーマ</h4>
+                            <p>チームを動かす鍵：「任せる」からはじまる信頼の育て方</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="benefits">
+            <div class="container">
+                <div class="section-header">
+                    <h2>この夜、あなたが受け取れるもの</h2>
+                </div>
+                <ul>
+                    <li>3人の話を聴いて、自分の人間関係のヒントが見つかる</li>
+                    <li>明日から試せる、具体的なコミュニケーションのコツ</li>
+                    <li>知っている仲間と、あたたかい時間を共有できる安心感</li>
+                    <li>3人の著者それぞれの視点から、物事を複眼的に見る面白さ</li>
+                    <li>自分のチームや家族との関わり方を、少しだけ変えてみたくなる</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="bonus">
+            <div class="container">
+                <div class="section-header">
+                    <h2>参加特典</h2>
+                </div>
+                <p style="text-align: center;">この日を記念して、参加される皆さまへ特別な贈り物をご用意しました。</p>
+                <div class="bonus-box">
+                    <h3>1. 登壇者3名の書籍（3冊）をプレゼント</h3>
+                    <p>参加費6,000円には、3人の新刊書籍（合計 約4,500円相当）と、ご自宅までの送料が含まれています。イベントで語られる話の背景を、ぜひお手元でじっくりお楽しみください。</p>
+                </div>
+                <div class="bonus-box">
+                    <h3>2. 登壇者からのスペシャル特典</h3>
+                    <ul>
+                        <li><strong>浜田陽介より：</strong>AI活用に関する<strong>30分無料Zoom相談</strong>。AIの使い方や導入、日常での活用の悩みなど、なんでも気軽にご相談ください。</li>
+                        <li><strong>堀もとこより：</strong>スペシャル特典を準備中です。近日公開！</li>
+                        <li><strong>岡本文宏より：</strong>こちらも特典を準備中です。どうぞお楽しみに！</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="outline">
+            <div class="container">
+                <div class="section-header">
+                    <h2>開催概要</h2>
+                </div>
+                <table>
+                    <tr>
+                        <th>日時</th>
+                        <td>2025年12月11日（木）19:30–21:30（JST）</td>
+                    </tr>
+                    <tr>
+                        <th>形式</th>
+                        <td>Zoomによるオンライン開催</td>
+                    </tr>
+                    <tr>
+                        <th>参加費</th>
+                        <td>6,000円（税込）</td>
+                    </tr>
+                    <tr>
+                        <th>含まれるもの</th>
+                        <td>登壇者3名の書籍3冊（事前郵送）、送料</td>
+                    </tr>
+                    <tr>
+                        <th>進行</th>
+                        <td>オープニング・トークセッション → 浜田 → 堀 → 岡本（各30分講演）</td>
+                    </tr>
+                    <tr>
+                        <th>主催</th>
+                        <td>エマージェンス・ジャパン合同会社（浜田陽介）</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <section id="faq">
+            <div class="container">
+                <div class="section-header">
+                    <h2>よくあるご質問</h2>
+                </div>
+                <div class="faq-item">
+                    <strong>Q. 録画の配信はありますか？</strong>
+                    <p>A. 今回はライブ参加のみの特別なイベントとなります。後日の録画配信は予定しておりませんので、ぜひリアルタイムでご参加ください。</p>
+                </div>
+                <div class="faq-item">
+                    <strong>Q. 書籍はいつ頃届きますか？</strong>
+                    <p>A. お申し込み後、5営業日以内を目安に発送手続きを行います。開催日までに余裕をもってお届けする予定です。</p>
+                </div>
+                <div class="faq-item">
+                    <strong>Q. 支払い後のキャンセルは可能ですか？</strong>
+                    <p>A. 開催日の7日前まではキャンセルを承ります。それ以降は書籍の発送準備に入るため、キャンセル・ご返金は致しかねますので、あらかじめご了承ください。</p>
+                </div>
+                 <div class="faq-item">
+                    <strong>Q. 支払い方法は何がありますか？</strong>
+                    <p>A. お申し込みフォームにて、クレジットカード決済と銀行振込をお選びいただけます。</p>
+                </div>
+            </div>
+        </section>
+        
+        <div class="notes container">
+            <h4>【お申し込み時の注意事項】</h4>
+            <ul>
+                <li>書籍の配送のため、お申し込みフォームでは必ずご住所（郵便番号・都道府県から）をご入力ください。</li>
+                <li>当日のZoom参加リンクは、開催前日までに、お申し込み時のメールアドレスへお送りします。</li>
+                <li>イベント参加に必要なPC、スマートフォン、インターネット環境などは各自でご準備をお願いいたします。</li>
+            </ul>
+        </div>
+
+        <section id="cta">
+            <div class="container">
+                <h2>この夜を、いっしょに共有しませんか？</h2>
+                <p style="color: var(--base-bg); margin: 2rem 0;">画面越しではありますが、皆さんとお会いできるのを楽しみにしています。</p>
+                <!-- 申込URLをここに設定 → https://example.com/asmail_form -->
+                <a href="#" id="asmel_url_bottom" class="cta-button">この夜をいっしょに共有する</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>主催：エマージェンス・ジャパン合同会社</p>
+            <p>&copy; 2025 C+Plus Special Edition. All Rights Reserved.</p>
+            <p>お問い合わせ: contact@example.com</p>
+        </div>
+    </footer>
+
+</body>
+</html>
